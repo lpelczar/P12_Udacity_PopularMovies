@@ -48,4 +48,10 @@ public class MoviesAdapter extends RecyclerView.Adapter<MovieViewHolder>  {
     public int getItemCount() {
         return (movieList == null) ? 0 : movieList.size();
     }
+
+    public void setMovieList(List<Movie> movieList) {
+        this.movieList.clear();
+        this.movieList.addAll(movieList);
+        notifyDataSetChanged();
+    }
 }
