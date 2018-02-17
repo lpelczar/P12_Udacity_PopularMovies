@@ -1,6 +1,7 @@
 package com.example.lpelczar.popularmovies.models;
 
 import java.time.LocalDate;
+import java.util.List;
 
 /**
  * Created by lpelczar on 17.02.18.
@@ -52,5 +53,13 @@ public class Movie {
 
     public void setPlot(String plot) {
         this.plot = plot;
+    }
+
+    public static class MovieResult {
+        private List<Movie> results;
+
+        public List<Movie> getResults() {
+            return results;
+        }
     }
 }
