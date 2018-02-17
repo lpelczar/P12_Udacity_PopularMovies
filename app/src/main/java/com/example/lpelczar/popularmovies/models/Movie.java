@@ -1,5 +1,7 @@
 package com.example.lpelczar.popularmovies.models;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.time.LocalDate;
 import java.util.List;
 
@@ -9,10 +11,19 @@ import java.util.List;
 
 public class Movie {
 
+    public static final String TMDB_IMAGE_PATH = "http://image.tmdb.org/t/p/w500";
+
     private String title;
+
     private LocalDate releaseDate;
+
+    @SerializedName("poster_path")
     private String poster;
+
+    @SerializedName("vote_average")
     private double averageVote;
+
+    @SerializedName("overview")
     private String plot;
 
     public String getTitle() {
@@ -32,7 +43,7 @@ public class Movie {
     }
 
     public String getPoster() {
-        return "http://t2.gstatic.com/images?q=tbn:ANd9GcQW3LbpT94mtUG1PZIIzJNxmFX399wr_NcvoppJ82k7z99Hx6in";
+        return TMDB_IMAGE_PATH + poster;
     }
 
     public void setPoster(String poster) {

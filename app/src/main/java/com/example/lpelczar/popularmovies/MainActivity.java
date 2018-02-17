@@ -12,9 +12,18 @@ import com.example.lpelczar.popularmovies.models.Movie;
 import java.util.ArrayList;
 import java.util.List;
 
+import retrofit.Callback;
+import retrofit.RequestInterceptor;
+import retrofit.RestAdapter;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
+
 public class MainActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
+    private MoviesAdapter adapter;
+
+    private final String API_KEY = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,15 +31,34 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
-        MoviesAdapter adapter = new MoviesAdapter(this);
+        adapter = new MoviesAdapter(this);
         recyclerView.setAdapter(adapter);
+        getMoviesFromApi();
+    }
 
-        List<Movie> movies = new ArrayList<>();
+    private void getMoviesFromApi() {
+        RestAdapter restAdapter = new RestAdapter.Builder()
+                .setEndpoint("http://api.themoviedb.org/3")
+                .setRequestInterceptor(new RequestInterceptor() {
+                    @Override
+                    public void intercept(RequestFacade request) {
+                        request.addEncodedQueryParam("api_key", API_KEY);
+                    }
+                })
+                .setLogLevel(RestAdapter.LogLevel.FULL)
+                .build();
+        MoviesAPIService service = restAdapter.create(MoviesAPIService.class);
+        service.getPopularMovies(new Callback<Movie.MovieResult>() {
+            @Override
+            public void success(Movie.MovieResult movieResult, Response response) {
+                adapter.setMovieList(movieResult.getResults());
+            }
 
-        for (int i = 0; i < 25; i++) {
-            movies.add(new Movie());
-        }
-        adapter.setMovieList(movies);
+            @Override
+            public void failure(RetrofitError error) {
+                error.printStackTrace();
+            }
+        });
     }
 
 }
