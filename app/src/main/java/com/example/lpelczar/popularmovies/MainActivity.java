@@ -17,13 +17,4 @@ public class MainActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.recyclerView);
     }
 
-    public static class MovieViewHolder extends RecyclerView.ViewHolder
-    {
-        public ImageView imageView;
-        public MovieViewHolder(View itemView)
-        {
-            super(itemView);
-            imageView = itemView.findViewById(R.id.movieImage);
-        }
-    }
 }
