@@ -31,7 +31,7 @@ public class Movie {
     }
 
     public String getPoster() {
-        return poster;
+        return "http://t2.gstatic.com/images?q=tbn:ANd9GcQW3LbpT94mtUG1PZIIzJNxmFX399wr_NcvoppJ82k7z99Hx6in";
     }
 
     public void setPoster(String poster) {
