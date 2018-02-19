@@ -1,4 +1,9 @@
 <resources>
     <string name="app_name">PopularMovies</string>
     <string name="title_activity_detail">DetailActivity</string>
+    <string name="movie_poster">Movie poster</string>
+    <string name="title_label">Title:</string>
+    <string name="release_label">Release date:</string>
+    <string name="average_vote">Average vote:</string>
+    <string name="plot_synopsis">Plot synopsis:</string>
 </resources>
