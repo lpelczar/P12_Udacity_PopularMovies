@@ -6,4 +6,5 @@
     <string name="release_label">Release date:</string>
     <string name="average_vote">Average vote:</string>
     <string name="plot_synopsis">Plot synopsis:</string>
+    <string name="movie_not_available">Movie data not available</string>
 </resources>

@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.example.lpelczar.popularmovies.models.Movie;
 import com.squareup.picasso.Picasso;
@@ -16,16 +17,22 @@ import java.util.List;
  * Created by lpelczar on 17.02.18.
  */
 
-public class MoviesAdapter extends RecyclerView.Adapter<MovieViewHolder>  {
+public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewHolder>  {
 
+    final private ListItemClickListener onClickListener;
     private List<Movie> movieList;
     private LayoutInflater inflater;
     private Context context;
 
-    public MoviesAdapter(Context context) {
+    public interface ListItemClickListener {
+        void onListItemClick(int clickedItemIndex);
+    }
+
+    public MoviesAdapter(Context context, ListItemClickListener listener) {
         this.movieList = new ArrayList<>();
         this.inflater = LayoutInflater.from(context);
         this.context = context;
+        this.onClickListener = listener;
     }
 
 
@@ -53,5 +60,32 @@ public class MoviesAdapter extends RecyclerView.Adapter<MovieViewHolder>  {
         this.movieList.clear();
         this.movieList.addAll(movieList);
         notifyDataSetChanged();
+    }
+
+    public List<Movie> getMovieList() {
+        return movieList;
+    }
+
+    public class MovieViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener
+    {
+        private ImageView imageView;
+
+        public MovieViewHolder(View itemView)
+        {
+            super(itemView);
+            imageView = itemView.findViewById(R.id.movieImage);
+            itemView.setOnClickListener(this);
+        }
+
+        public ImageView getImageView() {
+            return imageView;
+        }
+
+
+        @Override
+        public void onClick(View v) {
+            int position = getAdapterPosition();
+            onClickListener.onListItemClick(position);
+        }
     }
 }
