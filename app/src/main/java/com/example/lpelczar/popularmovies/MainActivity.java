@@ -1,5 +1,7 @@
 package com.example.lpelczar.popularmovies;
 
+import android.content.Intent;
+import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -18,12 +20,12 @@ import retrofit.RestAdapter;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements MoviesAdapter.ListItemClickListener {
 
     private RecyclerView recyclerView;
     private MoviesAdapter adapter;
 
-    private final String API_KEY = "";
+    private final String API_KEY = "ae7a0dd36fd83c3e0ddfb6d6f0f2fba9";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,12 +33,12 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
-        adapter = new MoviesAdapter(this);
+        adapter = new MoviesAdapter(this, this);
         recyclerView.setAdapter(adapter);
-        getMoviesFromApi();
+        fetchMoviesDataFromDB();
     }
 
-    private void getMoviesFromApi() {
+    private void fetchMoviesDataFromDB() {
         RestAdapter restAdapter = new RestAdapter.Builder()
                 .setEndpoint("http://api.themoviedb.org/3")
                 .setRequestInterceptor(new RequestInterceptor() {
@@ -61,4 +63,10 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    public void onListItemClick(int position) {
+        Intent intent = new Intent(this, DetailActivity.class);
+        intent.putExtra(DetailActivity.EXTRA_MOVIE, adapter.getMovieList().get(position));
+        startActivity(intent);
+    }
 }
