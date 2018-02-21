@@ -12,7 +12,7 @@
         <ImageView
             android:id="@+id/movie_iv"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_height="300dp"
             android:adjustViewBounds="true"
             android:contentDescription="@string/movie_poster"
             android:scaleType="centerCrop" />
@@ -21,12 +21,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/detail_field_margin"
-            android:layout_marginTop="@dimen/detail_field_margin">
+            android:layout_marginEnd="@dimen/detail_field_margin"
+            android:layout_marginTop="@dimen/top_margin">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/detail_field_margin"
+                android:layout_marginEnd="@dimen/label_margin"
                 android:text="@string/title_label"
                 android:textSize="@dimen/detail_field_size"
                 android:textStyle="bold" />
@@ -41,12 +42,14 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/detail_field_margin">
+            android:layout_marginStart="@dimen/detail_field_margin"
+            android:layout_marginEnd="@dimen/detail_field_margin"
+            android:layout_marginTop="@dimen/detail_field_margin">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/detail_field_margin"
+                android:layout_marginEnd="@dimen/label_margin"
                 android:text="@string/release_label"
                 android:textSize="@dimen/detail_field_size"
                 android:textStyle="bold" />
@@ -61,12 +64,14 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/detail_field_margin">
+            android:layout_marginStart="@dimen/detail_field_margin"
+            android:layout_marginEnd="@dimen/detail_field_margin"
+            android:layout_marginTop="@dimen/detail_field_margin">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/detail_field_margin"
+                android:layout_marginEnd="@dimen/label_margin"
                 android:text="@string/average_vote"
                 android:textSize="@dimen/detail_field_size"
                 android:textStyle="bold" />
@@ -81,12 +86,12 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/detail_field_margin">
+            android:layout_margin="@dimen/detail_field_margin">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/detail_field_margin"
+                android:layout_marginEnd="@dimen/label_margin"
                 android:text="@string/plot_synopsis"
                 android:textSize="@dimen/detail_field_size"
                 android:textStyle="bold" />
@@ -95,7 +100,8 @@
                 android:id="@+id/description_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/detail_field_size" />
+                android:textSize="@dimen/detail_field_size"
+                />
         </LinearLayout>
     </LinearLayout>
 </ScrollView>
