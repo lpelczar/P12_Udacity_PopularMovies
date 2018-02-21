@@ -28,6 +28,7 @@ public class Movie implements Parcelable {
 
     private String title;
 
+    @SerializedName("release_date")
     private String releaseDate;
 
     @SerializedName("poster_path")

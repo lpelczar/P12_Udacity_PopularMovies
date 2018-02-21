@@ -27,6 +27,8 @@ public class DetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
 
+        ImageView movieView = findViewById(R.id.movieImage);
+
         Intent intent = getIntent();
         if (intent == null) closeOnError();
 
@@ -45,12 +47,23 @@ public class DetailActivity extends AppCompatActivity {
 
     private void populateUI(Movie movie) {
 
+        ImageView movieView = findViewById(R.id.movie_iv);
+        Picasso.with(this)
+                .load(movie.getPoster())
+                .into(movieView);
+
         TextView title = findViewById(R.id.title_tv);
         title.setText(movie.getTitle());
-        
+
+        TextView releaseDate = findViewById(R.id.release_date_tv);
+        releaseDate.setText(movie.getReleaseDate());
+
         TextView averageVote = findViewById(R.id.average_vote_tv);
         averageVote.setText(String.format(Locale.getDefault(),
-                "%.2f", movie.getAverageVote()));
+
+
+
+                  "%.2f", movie.getAverageVote()));
 
         TextView description = findViewById(R.id.description_tv);
         description.setText(movie.getPlot());
