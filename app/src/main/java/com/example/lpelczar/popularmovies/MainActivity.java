@@ -6,6 +6,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -22,16 +24,18 @@ import retrofit.client.Response;
 
 public class MainActivity extends AppCompatActivity implements MoviesAdapter.ListItemClickListener {
 
-    private RecyclerView recyclerView;
+    private final String SORT_BY_POPULAR = "popular";
+    private final String SORT_BY_TOP_RATED = "top_rated";
     private MoviesAdapter adapter;
+    private String sort_order = SORT_BY_POPULAR;
 
-    private final String API_KEY = "ae7a0dd36fd83c3e0ddfb6d6f0f2fba9";
+    private final String API_KEY = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        recyclerView = findViewById(R.id.recyclerView);
+        RecyclerView recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
         adapter = new MoviesAdapter(this, this);
         recyclerView.setAdapter(adapter);
@@ -50,7 +54,30 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Lis
                 .setLogLevel(RestAdapter.LogLevel.FULL)
                 .build();
         MoviesAPIService service = restAdapter.create(MoviesAPIService.class);
+
+        if (sort_order.equals(SORT_BY_POPULAR)) {
+            getPopularMovies(service);
+        } else if (sort_order.equals(SORT_BY_TOP_RATED)) {
+            getTopRatedMovies(service);
+        }
+    }
+
+    private void getPopularMovies(MoviesAPIService service) {
         service.getPopularMovies(new Callback<Movie.MovieResult>() {
+            @Override
+            public void success(Movie.MovieResult movieResult, Response response) {
+                adapter.setMovieList(movieResult.getResults());
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                error.printStackTrace();
+            }
+        });
+    }
+
+    private void getTopRatedMovies(MoviesAPIService service) {
+        service.getTopRatedMovies(new Callback<Movie.MovieResult>() {
             @Override
             public void success(Movie.MovieResult movieResult, Response response) {
                 adapter.setMovieList(movieResult.getResults());
@@ -68,5 +95,29 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Lis
         Intent intent = new Intent(this, DetailActivity.class);
         intent.putExtra(DetailActivity.EXTRA_MOVIE, adapter.getMovieList().get(position));
         startActivity(intent);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        int itemId = item.getItemId();
+
+        switch (itemId) {
+            case R.id.action_sort_most_popular:
+                    sort_order = SORT_BY_POPULAR;
+                    fetchMoviesDataFromDB();
+                    return true;
+            case R.id.action_sort_top_rated:
+                    sort_order = SORT_BY_TOP_RATED;
+                    fetchMoviesDataFromDB();
+                    return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
