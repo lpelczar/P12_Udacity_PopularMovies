@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Lis
     private MoviesAdapter adapter;
     private String sort_order = SORT_BY_POPULAR;
 
-    private final String API_KEY = "";
+    private final String API_KEY = BuildConfig.THE_MOVIE_DB_API_TOKEN;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
