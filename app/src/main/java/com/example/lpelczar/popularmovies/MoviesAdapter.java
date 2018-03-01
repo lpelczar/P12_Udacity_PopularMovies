@@ -47,7 +47,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
         Movie movie = movieList.get(position);
         Picasso.with(context)
                 .load(movie.getPoster())
-                .placeholder(R.color.colorAccent)
+                .placeholder(R.color.accent)
                 .into(holder.getImageView());
     }
 

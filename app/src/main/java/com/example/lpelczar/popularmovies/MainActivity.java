@@ -2,6 +2,8 @@ package com.example.lpelczar.popularmovies;
 
 import android.content.Intent;
 import android.os.Parcelable;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -93,7 +95,8 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Lis
     @Override
     public void onListItemClick(int position) {
         Intent intent = new Intent(this, DetailActivity.class);
-        intent.putExtra(DetailActivity.EXTRA_MOVIE, adapter.getMovieList().get(position));
+        Movie movie = adapter.getMovieList().get(position);
+        intent.putExtra(DetailActivity.EXTRA_MOVIE, movie);
         startActivity(intent);
     }
 
