@@ -21,6 +21,8 @@ import com.example.lpelczar.popularmovies.models.Movie;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
+import java.util.Locale;
+
 
 public class DetailActivity extends AppCompatActivity {
 
@@ -84,19 +86,15 @@ public class DetailActivity extends AppCompatActivity {
         TextView title = findViewById(R.id.title);
         title.setText(movie.getTitle());
 
-//
-//        TextView releaseDate = findViewById(R.id.release_date_tv);
-//        releaseDate.setText(movie.getReleaseDate());
-//
-//        TextView averageVote = findViewById(R.id.average_vote_tv);
-//        averageVote.setText(String.format(Locale.getDefault(),
-//
-//
-//
-//                  "%.2f", movie.getAverageVote()));
-//
-//        TextView description = findViewById(R.id.description_tv);
-//        description.setText(movie.getPlot());
+        TextView releaseDate = findViewById(R.id.release_date_tv);
+        releaseDate.setText(movie.getReleaseDate());
+
+        TextView averageVote = findViewById(R.id.average_vote_tv);
+        averageVote.setText(String.format(Locale.getDefault(),
+                "%.2f", movie.getAverageVote()));
+
+        TextView description = findViewById(R.id.description_tv);
+        description.setText(movie.getPlot());
     }
 
     private void closeOnError() {

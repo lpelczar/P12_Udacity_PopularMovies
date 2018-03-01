@@ -71,15 +71,73 @@
                         android:layout_marginTop="@dimen/spacing_large"
                         android:textAppearance="@style/TextAppearance.AppCompat.Headline"/>
 
-                    <TextView
-                        android:id="@+id/description"
-                        android:layout_width="match_parent"
+                    <LinearLayout
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/spacing_large"
-                        android:text="Lorem ipsum dolor sit amet"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
+                        android:layout_marginStart="@dimen/detail_field_margin"
+                        android:layout_marginEnd="@dimen/detail_field_margin"
+                        android:layout_marginTop="@dimen/detail_field_margin">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="@dimen/label_margin"
+                            android:text="@string/release_label"
+                            android:textSize="@dimen/detail_field_size"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/release_date_tv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="@dimen/detail_field_size" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/detail_field_margin"
+                        android:layout_marginEnd="@dimen/detail_field_margin"
+                        android:layout_marginTop="@dimen/detail_field_margin">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="@dimen/label_margin"
+                            android:text="@string/average_vote"
+                            android:textSize="@dimen/detail_field_size"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/average_vote_tv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="@dimen/detail_field_size" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/detail_field_margin">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="@dimen/label_margin"
+                            android:text="@string/plot_synopsis"
+                            android:textSize="@dimen/detail_field_size"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/description_tv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="@dimen/detail_field_size"
+                            />
+                    </LinearLayout>
 
                 </LinearLayout>
+
 
             </android.support.v7.widget.CardView>
 
