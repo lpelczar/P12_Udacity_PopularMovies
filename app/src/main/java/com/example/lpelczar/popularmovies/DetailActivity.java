@@ -27,8 +27,6 @@ public class DetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
 
-        ImageView movieView = findViewById(R.id.movieImage);
-
         Intent intent = getIntent();
         if (intent == null) closeOnError();
 
