@@ -1,22 +1,20 @@
 package com.example.lpelczar.popularmovies;
 
 import android.content.Intent;
-import android.os.Parcelable;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.ImageView;
 
 import com.example.lpelczar.popularmovies.models.Movie;
+import com.example.lpelczar.popularmovies.models.Video;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import retrofit.Callback;
 import retrofit.RequestInterceptor;
@@ -41,10 +39,10 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Lis
         recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
         adapter = new MoviesAdapter(this, this);
         recyclerView.setAdapter(adapter);
-        fetchMoviesDataFromDB();
+        fetchMoviesDataFromDb();
     }
 
-    private void fetchMoviesDataFromDB() {
+    private void fetchMoviesDataFromDb() {
         RestAdapter restAdapter = new RestAdapter.Builder()
                 .setEndpoint("http://api.themoviedb.org/3")
                 .setRequestInterceptor(new RequestInterceptor() {
@@ -96,8 +94,49 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Lis
     public void onListItemClick(int position) {
         Intent intent = new Intent(this, DetailActivity.class);
         Movie movie = adapter.getMovieList().get(position);
+
+        fetchMovieTrailersFromDb(movie.getId());
+        movie.setVideos(adapter.getVideoList());
+
         intent.putExtra(DetailActivity.EXTRA_MOVIE, movie);
         startActivity(intent);
+    }
+
+    private void fetchMovieTrailersFromDb(int movieId) {
+        RestAdapter restAdapter = new RestAdapter.Builder()
+                .setEndpoint("http://api.themoviedb.org/3")
+                .setRequestInterceptor(new RequestInterceptor() {
+                    @Override
+                    public void intercept(RequestFacade request) {
+                        request.addEncodedQueryParam("api_key", API_KEY);
+                    }
+                })
+                .setLogLevel(RestAdapter.LogLevel.FULL)
+                .build();
+        MoviesAPIService service = restAdapter.create(MoviesAPIService.class);
+
+        getMovieTrailers(movieId, service);
+    }
+
+    private void getMovieTrailers(int movieId, MoviesAPIService service) {
+        service.getVideosByMovieId(movieId, new Callback<Video.VideoResult>() {
+            @Override
+            public void success(Video.VideoResult videoResult, Response response) {
+                List<Video> videos = videoResult.getResults();
+                List<Video> trailers = new ArrayList<>();
+                for (Video v : videos) {
+                    if (v.getType().equals("Trailer")) {
+                        trailers.add(v);
+                    }
+                }
+                adapter.setVideoList(trailers);
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                error.printStackTrace();
+            }
+        });
     }
 
     @Override
@@ -114,11 +153,11 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Lis
         switch (itemId) {
             case R.id.action_sort_most_popular:
                     sort_order = SORT_BY_POPULAR;
-                    fetchMoviesDataFromDB();
+                    fetchMoviesDataFromDb();
                     return true;
             case R.id.action_sort_top_rated:
                     sort_order = SORT_BY_TOP_RATED;
-                    fetchMoviesDataFromDB();
+                    fetchMoviesDataFromDb();
                     return true;
         }
         return super.onOptionsItemSelected(item);
