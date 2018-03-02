@@ -3,9 +3,12 @@ package com.example.lpelczar.popularmovies.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -14,7 +17,7 @@ import java.util.List;
 
 public class Movie implements Parcelable {
 
-    public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
+    public static final Parcelable.Creator<Movie> CREATOR = new Parcelable.Creator<Movie>() {
         public Movie createFromParcel(Parcel in) {
             return new Movie(in);
         }
@@ -100,6 +103,10 @@ public class Movie implements Parcelable {
         this.videos = videos;
     }
 
+    public void addVideo(Video video) {
+        this.videos.add(video);
+    }
+
     public static class MovieResult {
         private List<Movie> results;
 
@@ -116,6 +123,8 @@ public class Movie implements Parcelable {
         this.poster =  in.readString();
         this.averageVote = in.readDouble();
         this.plot = in.readString();
+        this.videos = new ArrayList<>();
+        in.readTypedList(videos, Video.CREATOR);
     }
 
     @Override
@@ -131,6 +140,7 @@ public class Movie implements Parcelable {
         dest.writeString(this.poster);
         dest.writeDouble(this.averageVote);
         dest.writeString(this.plot);
+        dest.writeTypedList(this.videos);
     }
 
     @Override

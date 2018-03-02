@@ -14,7 +14,6 @@ import com.example.lpelczar.popularmovies.models.Video;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import retrofit.Callback;
 import retrofit.RequestInterceptor;
@@ -26,10 +25,10 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Lis
 
     private final String SORT_BY_POPULAR = "popular";
     private final String SORT_BY_TOP_RATED = "top_rated";
-    private MoviesAdapter adapter;
+    private MoviesAdapter moviesAdapter;
     private String sort_order = SORT_BY_POPULAR;
 
-    private final String API_KEY = BuildConfig.THE_MOVIE_DB_API_TOKEN;
+    protected static final String API_KEY = BuildConfig.THE_MOVIE_DB_API_TOKEN;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,12 +36,12 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Lis
         setContentView(R.layout.activity_main);
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
-        adapter = new MoviesAdapter(this, this);
-        recyclerView.setAdapter(adapter);
+        moviesAdapter = new MoviesAdapter(this, this);
+        recyclerView.setAdapter(moviesAdapter);
         fetchMoviesDataFromDb();
     }
 
-    private void fetchMoviesDataFromDb() {
+    private MoviesAPIService getMoviesApiService() {
         RestAdapter restAdapter = new RestAdapter.Builder()
                 .setEndpoint("http://api.themoviedb.org/3")
                 .setRequestInterceptor(new RequestInterceptor() {
@@ -53,20 +52,30 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Lis
                 })
                 .setLogLevel(RestAdapter.LogLevel.FULL)
                 .build();
-        MoviesAPIService service = restAdapter.create(MoviesAPIService.class);
+        return restAdapter.create(MoviesAPIService.class);
+    }
 
+    private void fetchMoviesDataFromDb() {
         if (sort_order.equals(SORT_BY_POPULAR)) {
-            getPopularMovies(service);
+            getPopularMovies(getMoviesApiService());
         } else if (sort_order.equals(SORT_BY_TOP_RATED)) {
-            getTopRatedMovies(service);
+            getTopRatedMovies(getMoviesApiService());
         }
     }
 
-    private void getPopularMovies(MoviesAPIService service) {
+    private void fetchTrailersFromDb() {
+        for (Movie m : moviesAdapter.getMovieList()) {
+            m.setVideos(new ArrayList<Video>());
+            getMovieTrailers(m, getMoviesApiService());
+        }
+    }
+
+    private void getPopularMovies(final MoviesAPIService service) {
         service.getPopularMovies(new Callback<Movie.MovieResult>() {
             @Override
             public void success(Movie.MovieResult movieResult, Response response) {
-                adapter.setMovieList(movieResult.getResults());
+                moviesAdapter.setMovieList(movieResult.getResults());
+                fetchTrailersFromDb();
             }
 
             @Override
@@ -76,13 +85,31 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Lis
         });
     }
 
-    private void getTopRatedMovies(MoviesAPIService service) {
+    private void getTopRatedMovies(final MoviesAPIService service) {
         service.getTopRatedMovies(new Callback<Movie.MovieResult>() {
             @Override
             public void success(Movie.MovieResult movieResult, Response response) {
-                adapter.setMovieList(movieResult.getResults());
+                moviesAdapter.setMovieList(movieResult.getResults());
+                fetchTrailersFromDb();
             }
 
+            @Override
+            public void failure(RetrofitError error) {
+                error.printStackTrace();
+            }
+        });
+    }
+
+    private void getMovieTrailers(final Movie movie, MoviesAPIService service) {
+        service.getVideosByMovieId(movie.getId(), new retrofit.Callback<Video.VideoResult>() {
+            @Override
+            public void success(Video.VideoResult videoResult, Response response) {
+                for (Video v : videoResult.getResults()) {
+                    if (v.getType().equals(getString(R.string.trailer))) {
+                        movie.addVideo(v);
+                    }
+                }
+            }
             @Override
             public void failure(RetrofitError error) {
                 error.printStackTrace();
@@ -93,50 +120,9 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Lis
     @Override
     public void onListItemClick(int position) {
         Intent intent = new Intent(this, DetailActivity.class);
-        Movie movie = adapter.getMovieList().get(position);
-
-        fetchMovieTrailersFromDb(movie.getId());
-        movie.setVideos(adapter.getVideoList());
-
+        Movie movie = moviesAdapter.getMovieList().get(position);
         intent.putExtra(DetailActivity.EXTRA_MOVIE, movie);
         startActivity(intent);
-    }
-
-    private void fetchMovieTrailersFromDb(int movieId) {
-        RestAdapter restAdapter = new RestAdapter.Builder()
-                .setEndpoint("http://api.themoviedb.org/3")
-                .setRequestInterceptor(new RequestInterceptor() {
-                    @Override
-                    public void intercept(RequestFacade request) {
-                        request.addEncodedQueryParam("api_key", API_KEY);
-                    }
-                })
-                .setLogLevel(RestAdapter.LogLevel.FULL)
-                .build();
-        MoviesAPIService service = restAdapter.create(MoviesAPIService.class);
-
-        getMovieTrailers(movieId, service);
-    }
-
-    private void getMovieTrailers(int movieId, MoviesAPIService service) {
-        service.getVideosByMovieId(movieId, new Callback<Video.VideoResult>() {
-            @Override
-            public void success(Video.VideoResult videoResult, Response response) {
-                List<Video> videos = videoResult.getResults();
-                List<Video> trailers = new ArrayList<>();
-                for (Video v : videos) {
-                    if (v.getType().equals("Trailer")) {
-                        trailers.add(v);
-                    }
-                }
-                adapter.setVideoList(trailers);
-            }
-
-            @Override
-            public void failure(RetrofitError error) {
-                error.printStackTrace();
-            }
-        });
     }
 
     @Override

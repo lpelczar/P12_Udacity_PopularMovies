@@ -22,7 +22,6 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
 
     final private ListItemClickListener onClickListener;
     private List<Movie> movieList;
-    private List<Video> videoList;
     private LayoutInflater inflater;
     private Context context;
 
@@ -66,14 +65,6 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
 
     public List<Movie> getMovieList() {
         return movieList;
-    }
-
-    public List<Video> getVideoList() {
-        return videoList;
-    }
-
-    public void setVideoList(List<Video> videoList) {
-        this.videoList = videoList;
     }
 
     public class MovieViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener

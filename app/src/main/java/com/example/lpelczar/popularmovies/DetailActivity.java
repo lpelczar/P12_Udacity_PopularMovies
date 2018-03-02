@@ -11,17 +11,27 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.lpelczar.popularmovies.models.Movie;
+import com.example.lpelczar.popularmovies.models.Video;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
+
+import retrofit.RequestInterceptor;
+import retrofit.RestAdapter;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 
 public class DetailActivity extends AppCompatActivity {
@@ -95,6 +105,10 @@ public class DetailActivity extends AppCompatActivity {
 
         TextView description = findViewById(R.id.description_tv);
         description.setText(movie.getPlot());
+
+        TrailerAdapter adapter = new TrailerAdapter(this, movie.getVideos());
+        ListView trailersListView = findViewById(R.id.trailers);
+        trailersListView.setAdapter(adapter);
     }
 
     private void closeOnError() {

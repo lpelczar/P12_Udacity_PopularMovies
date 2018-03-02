@@ -6,4 +6,5 @@
     <dimen name="label_margin">8dp</dimen>
     <dimen name="spacing_large">16dp</dimen>
     <dimen name="spacing_medium">8dp</dimen>
+    <dimen name="list_item_height">88dp</dimen>
 </resources>
