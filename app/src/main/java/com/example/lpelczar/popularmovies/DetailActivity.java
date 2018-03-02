@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import com.example.lpelczar.popularmovies.models.Movie;
 import com.example.lpelczar.popularmovies.models.Video;
+import com.example.lpelczar.popularmovies.widgets.NonScrollListView;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
@@ -107,7 +108,12 @@ public class DetailActivity extends AppCompatActivity {
         description.setText(movie.getPlot());
 
         TrailerAdapter adapter = new TrailerAdapter(this, movie.getVideos());
-        ListView trailersListView = findViewById(R.id.trailers);
+
+        for (Video v : movie.getVideos()) {
+            Log.e("dd", v.toString());
+        }
+
+        NonScrollListView trailersListView = findViewById(R.id.trailers);
         trailersListView.setAdapter(adapter);
     }
 
