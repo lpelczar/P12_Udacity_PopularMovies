@@ -119,6 +119,7 @@ public class DetailActivity extends AppCompatActivity {
         ReviewAdapter reviewAdapter = new ReviewAdapter(this, movie.getReviews());
         NonScrollListView reviewsListView = findViewById(R.id.reviews);
         reviewsListView.setAdapter(reviewAdapter);
+        handleClickingOnReviews(movie.getReviews(), reviewsListView);
     }
 
     private void handleClickingOnTrailers(final List<Video> videos, ListView listView) {
@@ -138,6 +139,18 @@ public class DetailActivity extends AppCompatActivity {
                 } catch (ActivityNotFoundException ex) {
                     getApplicationContext().startActivity(webIntent);
                 }
+            }
+        });
+    }
+
+    private void handleClickingOnReviews(final List<Review> reviews, ListView listView) {
+        
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                Review review = reviews.get(position);
+                Intent webIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(review.getUrl()));
+                getApplicationContext().startActivity(webIntent);
             }
         });
     }

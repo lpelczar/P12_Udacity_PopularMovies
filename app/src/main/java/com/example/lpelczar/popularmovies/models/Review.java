@@ -13,6 +13,7 @@ public class Review implements Parcelable {
 
     private String author;
     private String content;
+    private String url;
 
     public void setAuthor(String author) {
         this.author = author;
@@ -28,6 +29,14 @@ public class Review implements Parcelable {
 
     public String getContent() {
         return content;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 
     public static class ReviewResult {
@@ -51,6 +60,7 @@ public class Review implements Parcelable {
     private Review(Parcel in){
         this.author = in.readString();
         this.content = in.readString();
+        this.url = in.readString();
     }
 
     @Override
@@ -62,6 +72,7 @@ public class Review implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(this.author);
         dest.writeString(this.content);
+        dest.writeString(this.url);
     }
 
 
