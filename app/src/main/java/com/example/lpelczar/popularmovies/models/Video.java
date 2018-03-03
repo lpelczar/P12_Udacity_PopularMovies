@@ -11,19 +11,6 @@ import java.util.List;
 
 public class Video implements Parcelable {
 
-    public static final Parcelable.Creator<Video> CREATOR
-            = new Parcelable.Creator<Video>() {
-        public Video createFromParcel(Parcel in) {
-            return new Video(in);
-        }
-
-        public Video[] newArray(int size) {
-            return new Video[size];
-        }
-    };
-
-    public static final String YOUTUBE_PATH = "https://www.youtube.com/watch?v=";
-
     private String key;
     private String name;
     private String type;
@@ -53,7 +40,7 @@ public class Video implements Parcelable {
     }
 
     private String getYoutubeLink() {
-        return YOUTUBE_PATH + key;
+        return "https://www.youtube.com/watch?v=" + key;
     }
 
     public static class VideoResult {
@@ -64,8 +51,18 @@ public class Video implements Parcelable {
         }
     }
 
+    static final Parcelable.Creator<Video> CREATOR = new Parcelable.Creator<Video>() {
+        public Video createFromParcel(Parcel in) {
+            return new Video(in);
+        }
+
+        public Video[] newArray(int size) {
+            return new Video[size];
+        }
+    };
+
     // Parcelling part
-    public Video(Parcel in){
+    Video(Parcel in){
         this.key = in.readString();
         this.name = in.readString();
         this.type = in.readString();

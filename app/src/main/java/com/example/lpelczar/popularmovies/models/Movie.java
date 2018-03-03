@@ -17,18 +17,6 @@ import java.util.List;
 
 public class Movie implements Parcelable {
 
-    public static final Parcelable.Creator<Movie> CREATOR = new Parcelable.Creator<Movie>() {
-        public Movie createFromParcel(Parcel in) {
-            return new Movie(in);
-        }
-
-        public Movie[] newArray(int size) {
-            return new Movie[size];
-        }
-    };
-
-    public static final String TMDB_IMAGE_PATH = "http://image.tmdb.org/t/p/w500";
-
     private int id;
 
     private String title;
@@ -64,7 +52,7 @@ public class Movie implements Parcelable {
     }
 
     public String getPoster() {
-        return TMDB_IMAGE_PATH + poster;
+        return "http://image.tmdb.org/t/p/w500" + poster;
     }
 
     public void setPoster(String poster) {
@@ -115,8 +103,18 @@ public class Movie implements Parcelable {
         }
     }
 
+    public static final Parcelable.Creator<Movie> CREATOR = new Parcelable.Creator<Movie>() {
+        public Movie createFromParcel(Parcel in) {
+            return new Movie(in);
+        }
+
+        public Movie[] newArray(int size) {
+            return new Movie[size];
+        }
+    };
+
     // Parcelling part
-    public Movie(Parcel in){
+    private Movie(Parcel in){
         this.id = in.readInt();
         this.title = in.readString();
         this.releaseDate = in.readString();
