@@ -139,6 +139,14 @@
                             />
                     </LinearLayout>
 
+                    <TextView
+                        android:id="@+id/trailers_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="16dp"
+                        android:textStyle="bold"
+                        android:textSize="@dimen/detail_field_size"/>
+
                     <com.example.lpelczar.popularmovies.widgets.NonScrollListView
                         xmlns:android="http://schemas.android.com/apk/res/android"
                         android:id="@+id/trailers"
@@ -146,6 +154,14 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:drawSelectorOnTop="true"/>
+
+                    <TextView
+                        android:id="@+id/reviews_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="16dp"
+                        android:textStyle="bold"
+                        android:textSize="@dimen/detail_field_size"/>
 
                     <com.example.lpelczar.popularmovies.widgets.NonScrollListView
                         xmlns:android="http://schemas.android.com/apk/res/android"

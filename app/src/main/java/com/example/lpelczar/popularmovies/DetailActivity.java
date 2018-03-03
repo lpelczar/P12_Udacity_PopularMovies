@@ -111,10 +111,21 @@ public class DetailActivity extends AppCompatActivity {
         TextView description = findViewById(R.id.description_tv);
         description.setText(movie.getPlot());
 
+        if (!movie.getVideos().isEmpty()) {
+            TextView treilersLabel = findViewById(R.id.trailers_label);
+            treilersLabel.setText(R.string.trailers_label);
+        }
+
         TrailerAdapter trailerAdapter = new TrailerAdapter(this, movie.getVideos());
         NonScrollListView trailersListView = findViewById(R.id.trailers);
         trailersListView.setAdapter(trailerAdapter);
         handleClickingOnTrailers(movie.getVideos(), trailersListView);
+
+        if (!movie.getReviews().isEmpty()) {
+            TextView reviewsLabel = findViewById(R.id.reviews_label);
+            reviewsLabel.setText(R.string.reviews_label);
+        }
+
 
         ReviewAdapter reviewAdapter = new ReviewAdapter(this, movie.getReviews());
         NonScrollListView reviewsListView = findViewById(R.id.reviews);
@@ -144,7 +155,7 @@ public class DetailActivity extends AppCompatActivity {
     }
 
     private void handleClickingOnReviews(final List<Review> reviews, ListView listView) {
-        
+
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {

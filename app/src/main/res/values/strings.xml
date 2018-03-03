@@ -10,4 +10,6 @@
     <string name="sort_by_most_popular">Most popular</string>
     <string name="sort_by_top_rated">Top Rated</string>
     <string name="trailer">Trailer</string>
+    <string name="reviews_label">Reviews:</string>
+    <string name="trailers_label">Trailers:</string>
 </resources>
