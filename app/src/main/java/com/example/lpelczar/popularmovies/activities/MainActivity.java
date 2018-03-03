@@ -1,20 +1,22 @@
-package com.example.lpelczar.popularmovies;
+package com.example.lpelczar.popularmovies.activities;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.example.lpelczar.popularmovies.BuildConfig;
+import com.example.lpelczar.popularmovies.services.MoviesAPIService;
+import com.example.lpelczar.popularmovies.adapters.MoviesAdapter;
+import com.example.lpelczar.popularmovies.R;
 import com.example.lpelczar.popularmovies.models.Movie;
 import com.example.lpelczar.popularmovies.models.Review;
 import com.example.lpelczar.popularmovies.models.Video;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import retrofit.Callback;
 import retrofit.RequestInterceptor;

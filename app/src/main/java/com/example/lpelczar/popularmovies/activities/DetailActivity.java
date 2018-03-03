@@ -1,4 +1,4 @@
-package com.example.lpelczar.popularmovies;
+package com.example.lpelczar.popularmovies.activities;
 
 
 import android.content.ActivityNotFoundException;
@@ -6,8 +6,6 @@ import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
-import android.media.AudioManager;
-import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -15,16 +13,17 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.lpelczar.popularmovies.R;
+import com.example.lpelczar.popularmovies.adapters.ReviewAdapter;
+import com.example.lpelczar.popularmovies.adapters.TrailerAdapter;
 import com.example.lpelczar.popularmovies.models.Movie;
 import com.example.lpelczar.popularmovies.models.Review;
 import com.example.lpelczar.popularmovies.models.Video;
@@ -32,14 +31,8 @@ import com.example.lpelczar.popularmovies.widgets.NonScrollListView;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-
-import retrofit.RequestInterceptor;
-import retrofit.RestAdapter;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
 
 
 public class DetailActivity extends AppCompatActivity {

@@ -1,4 +1,4 @@
-package com.example.lpelczar.popularmovies;
+package com.example.lpelczar.popularmovies.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -7,8 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.example.lpelczar.popularmovies.R;
 import com.example.lpelczar.popularmovies.models.Movie;
-import com.example.lpelczar.popularmovies.models.Video;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;

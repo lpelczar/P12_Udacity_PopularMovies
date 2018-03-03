@@ -1,4 +1,4 @@
-package com.example.lpelczar.popularmovies;
+package com.example.lpelczar.popularmovies.services;
 
 import com.example.lpelczar.popularmovies.models.Movie;
 import com.example.lpelczar.popularmovies.models.Review;
