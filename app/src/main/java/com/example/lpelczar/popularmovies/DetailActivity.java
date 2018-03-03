@@ -1,10 +1,14 @@
 package com.example.lpelczar.popularmovies;
 
 
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -13,7 +17,9 @@ import android.support.v7.graphics.Palette;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MotionEvent;
+import android.view.View;
 import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -108,13 +114,30 @@ public class DetailActivity extends AppCompatActivity {
         description.setText(movie.getPlot());
 
         TrailerAdapter adapter = new TrailerAdapter(this, movie.getVideos());
-
-        for (Video v : movie.getVideos()) {
-            Log.e("dd", v.toString());
-        }
-
         NonScrollListView trailersListView = findViewById(R.id.trailers);
         trailersListView.setAdapter(adapter);
+        handleClickingOnTrailers(movie.getVideos(), trailersListView);
+    }
+
+    private void handleClickingOnTrailers(final List<Video> videos, ListView listView) {
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+
+                Video video = videos.get(position);
+
+                Intent appIntent = new Intent(Intent.ACTION_VIEW,
+                        Uri.parse("vnd.youtube:" + video.getKey()));
+                Intent webIntent = new Intent(Intent.ACTION_VIEW,
+                        Uri.parse("http://www.youtube.com/watch?v=" + video.getKey()));
+                try {
+                    getApplicationContext().startActivity(appIntent);
+                } catch (ActivityNotFoundException ex) {
+                    getApplicationContext().startActivity(webIntent);
+                }
+            }
+        });
     }
 
     private void closeOnError() {
