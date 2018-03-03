@@ -26,6 +26,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.lpelczar.popularmovies.models.Movie;
+import com.example.lpelczar.popularmovies.models.Review;
 import com.example.lpelczar.popularmovies.models.Video;
 import com.example.lpelczar.popularmovies.widgets.NonScrollListView;
 import com.squareup.picasso.Callback;

@@ -35,6 +35,8 @@ public class Movie implements Parcelable {
 
     private List<Video> videos;
 
+    private List<Review> reviews;
+
     public String getTitle() {
         return title;
     }
@@ -95,6 +97,14 @@ public class Movie implements Parcelable {
         this.videos.add(video);
     }
 
+    public List<Review> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(List<Review> reviews) {
+        this.reviews = reviews;
+    }
+
     public static class MovieResult {
         private List<Movie> results;
 
@@ -113,7 +123,6 @@ public class Movie implements Parcelable {
         }
     };
 
-    // Parcelling part
     private Movie(Parcel in){
         this.id = in.readInt();
         this.title = in.readString();
@@ -123,6 +132,8 @@ public class Movie implements Parcelable {
         this.plot = in.readString();
         this.videos = new ArrayList<>();
         in.readTypedList(videos, Video.CREATOR);
+        this.reviews = new ArrayList<>();
+        in.readTypedList(reviews, Review.CREATOR);
     }
 
     @Override
@@ -139,6 +150,7 @@ public class Movie implements Parcelable {
         dest.writeDouble(this.averageVote);
         dest.writeString(this.plot);
         dest.writeTypedList(this.videos);
+        dest.writeTypedList(this.reviews);
     }
 
     @Override

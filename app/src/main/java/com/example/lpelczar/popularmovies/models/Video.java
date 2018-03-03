@@ -61,8 +61,7 @@ public class Video implements Parcelable {
         }
     };
 
-    // Parcelling part
-    Video(Parcel in){
+    private Video(Parcel in){
         this.key = in.readString();
         this.name = in.readString();
         this.type = in.readString();

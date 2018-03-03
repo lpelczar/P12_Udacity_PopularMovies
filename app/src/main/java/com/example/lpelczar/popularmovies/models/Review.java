@@ -3,6 +3,8 @@ package com.example.lpelczar.popularmovies.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.List;
+
 /**
  * Created by lpelczar on 03.03.18.
  */
@@ -28,7 +30,15 @@ public class Review implements Parcelable {
         return content;
     }
 
-    public static final Parcelable.Creator<Review> CREATOR = new Parcelable.Creator<Review>() {
+    public static class ReviewResult {
+        private List<Review> results;
+
+        public List<Review> getResults() {
+            return results;
+        }
+    }
+
+    static final Parcelable.Creator<Review> CREATOR = new Parcelable.Creator<Review>() {
         public Review createFromParcel(Parcel in) {
             return new Review(in);
         }
@@ -38,8 +48,7 @@ public class Review implements Parcelable {
         }
     };
 
-    // Parcelling part
-    Review(Parcel in){
+    private Review(Parcel in){
         this.author = in.readString();
         this.content = in.readString();
     }

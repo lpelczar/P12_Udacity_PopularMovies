@@ -10,6 +10,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.example.lpelczar.popularmovies.models.Movie;
+import com.example.lpelczar.popularmovies.models.Review;
 import com.example.lpelczar.popularmovies.models.Video;
 
 import java.util.ArrayList;
@@ -41,6 +42,14 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Lis
         fetchMoviesDataFromDb();
     }
 
+    private void fetchMoviesDataFromDb() {
+        if (sort_order.equals(SORT_BY_POPULAR)) {
+            getPopularMovies(getMoviesApiService());
+        } else if (sort_order.equals(SORT_BY_TOP_RATED)) {
+            getTopRatedMovies(getMoviesApiService());
+        }
+    }
+
     private MoviesAPIService getMoviesApiService() {
         RestAdapter restAdapter = new RestAdapter.Builder()
                 .setEndpoint("http://api.themoviedb.org/3")
@@ -55,27 +64,13 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Lis
         return restAdapter.create(MoviesAPIService.class);
     }
 
-    private void fetchMoviesDataFromDb() {
-        if (sort_order.equals(SORT_BY_POPULAR)) {
-            getPopularMovies(getMoviesApiService());
-        } else if (sort_order.equals(SORT_BY_TOP_RATED)) {
-            getTopRatedMovies(getMoviesApiService());
-        }
-    }
-
-    private void fetchTrailersFromDb() {
-        for (Movie m : moviesAdapter.getMovieList()) {
-            m.setVideos(new ArrayList<Video>());
-            getMovieTrailers(m, getMoviesApiService());
-        }
-    }
-
     private void getPopularMovies(final MoviesAPIService service) {
         service.getPopularMovies(new Callback<Movie.MovieResult>() {
             @Override
             public void success(Movie.MovieResult movieResult, Response response) {
                 moviesAdapter.setMovieList(movieResult.getResults());
                 fetchTrailersFromDb();
+                fetchReviewsFromDb();
             }
 
             @Override
@@ -91,6 +86,7 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Lis
             public void success(Movie.MovieResult movieResult, Response response) {
                 moviesAdapter.setMovieList(movieResult.getResults());
                 fetchTrailersFromDb();
+                fetchReviewsFromDb();
             }
 
             @Override
@@ -98,6 +94,13 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Lis
                 error.printStackTrace();
             }
         });
+    }
+
+    private void fetchTrailersFromDb() {
+        for (Movie m : moviesAdapter.getMovieList()) {
+            m.setVideos(new ArrayList<Video>());
+            getMovieTrailers(m, getMoviesApiService());
+        }
     }
 
     private void getMovieTrailers(final Movie movie, MoviesAPIService service) {
@@ -109,6 +112,26 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Lis
                         movie.addVideo(v);
                     }
                 }
+            }
+            @Override
+            public void failure(RetrofitError error) {
+                error.printStackTrace();
+            }
+        });
+    }
+
+    private void fetchReviewsFromDb() {
+        for (Movie m : moviesAdapter.getMovieList()) {
+            m.setReviews(new ArrayList<Review>());
+            getMovieReviews(m, getMoviesApiService());
+        }
+    }
+
+    private void getMovieReviews(final Movie movie, MoviesAPIService service) {
+        service.getReviewsByMovieId(movie.getId(), new retrofit.Callback<Review.ReviewResult>() {
+            @Override
+            public void success(Review.ReviewResult reviewResult, Response response) {
+                movie.setReviews(reviewResult.getResults());
             }
             @Override
             public void failure(RetrofitError error) {
