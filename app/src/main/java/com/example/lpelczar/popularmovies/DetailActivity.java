@@ -114,10 +114,14 @@ public class DetailActivity extends AppCompatActivity {
         TextView description = findViewById(R.id.description_tv);
         description.setText(movie.getPlot());
 
-        TrailerAdapter adapter = new TrailerAdapter(this, movie.getVideos());
+        TrailerAdapter trailerAdapter = new TrailerAdapter(this, movie.getVideos());
         NonScrollListView trailersListView = findViewById(R.id.trailers);
-        trailersListView.setAdapter(adapter);
+        trailersListView.setAdapter(trailerAdapter);
         handleClickingOnTrailers(movie.getVideos(), trailersListView);
+
+        ReviewAdapter reviewAdapter = new ReviewAdapter(this, movie.getReviews());
+        NonScrollListView reviewsListView = findViewById(R.id.reviews);
+        reviewsListView.setAdapter(reviewAdapter);
     }
 
     private void handleClickingOnTrailers(final List<Video> videos, ListView listView) {

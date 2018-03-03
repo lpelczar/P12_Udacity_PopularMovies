@@ -3,8 +3,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/list_item_height"
-    android:minHeight="@dimen/list_item_height">
+    android:layout_height="wrap_content"
+    android:minHeight="100dp">
 
     <RelativeLayout
         android:id="@+id/text_container"
@@ -18,20 +18,23 @@
         android:paddingEnd="16dp">
 
         <TextView
-            android:id="@+id/trailer_name"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center_vertical"
+            android:id="@+id/review_author"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="top"
+            android:layout_marginTop="16dp"
             android:textAppearance="?android:textAppearanceMedium"
             android:textStyle="bold"
-            tools:text="Trailer name" />
+            tools:text="Author 1" />
 
-        <ImageView
-            android:layout_width="45dp"
-            android:layout_height="45dp"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            android:layout_marginEnd="16dp"
-            android:src="@drawable/ic_play_arrow_black_36dp" />
+        <TextView
+            android:id="@+id/review_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/review_author"
+            android:layout_marginBottom="16dp"
+            android:textAppearance="?android:textAppearanceMedium"
+            tools:text="This is the review" />
+
     </RelativeLayout>
 </RelativeLayout>

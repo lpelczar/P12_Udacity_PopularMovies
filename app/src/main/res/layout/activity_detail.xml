@@ -144,6 +144,14 @@
                         android:layout_height="wrap_content"
                         android:drawSelectorOnTop="true"/>
 
+                    <com.example.lpelczar.popularmovies.widgets.NonScrollListView
+                        xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:id="@+id/reviews"
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:drawSelectorOnTop="true"/>
+
                 </LinearLayout>
 
 

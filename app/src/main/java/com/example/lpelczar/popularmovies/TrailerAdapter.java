@@ -29,13 +29,13 @@ public class TrailerAdapter extends ArrayAdapter<Video> {
 
         Video currentVideo = getItem(position);
 
-        TextView polishTextView = listItemView.findViewById(R.id.trailer_name);
+        TextView trailerTextView = listItemView.findViewById(R.id.trailer_name);
 
 
         if (currentVideo != null) {
-            polishTextView.setText(currentVideo.getName());
+            trailerTextView.setText(currentVideo.getName());
         } else {
-            polishTextView.setText(R.string.trailer);
+            trailerTextView.setText(R.string.trailer);
         }
 
         return listItemView;
