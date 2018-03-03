@@ -75,9 +75,6 @@ public class DetailActivity extends AppCompatActivity {
 
         populateUI(movie);
 
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS,
-                WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-
         setTitle(movie.getTitle());
     }
 
