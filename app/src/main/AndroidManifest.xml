@@ -10,6 +10,7 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true">
+
         <activity
             android:name=".activities.MainActivity"
             android:theme="@style/AppTheme">
@@ -18,10 +19,17 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".activities.DetailActivity"
             android:theme="@style/BaseTheme"
             android:label="@string/title_activity_detail"
             android:parentActivityName=".activities.MainActivity"/>
+
+        <provider
+            android:name=".data.MovieContentProvider"
+            android:authorities="com.example.lpelczar.popularmovies"
+            android:exported="false"/>
+
     </application>
 </manifest>
