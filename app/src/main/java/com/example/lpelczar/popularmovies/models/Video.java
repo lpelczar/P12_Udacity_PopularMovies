@@ -3,13 +3,14 @@ package com.example.lpelczar.popularmovies.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by lpelczar on 02.03.18.
  */
 
-public class Video implements Parcelable {
+public class Video implements Parcelable, Serializable {
 
     private String key;
     private String name;

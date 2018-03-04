@@ -3,13 +3,15 @@ package com.example.lpelczar.popularmovies.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by lpelczar on 03.03.18.
  */
 
-public class Review implements Parcelable {
+public class Review implements Parcelable, Serializable {
 
     private String author;
     private String content;

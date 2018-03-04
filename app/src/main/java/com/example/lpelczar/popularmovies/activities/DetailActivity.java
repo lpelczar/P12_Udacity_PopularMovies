@@ -2,6 +2,7 @@ package com.example.lpelczar.popularmovies.activities;
 
 
 import android.content.ActivityNotFoundException;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
@@ -24,12 +25,16 @@ import android.widget.Toast;
 import com.example.lpelczar.popularmovies.R;
 import com.example.lpelczar.popularmovies.adapters.ReviewAdapter;
 import com.example.lpelczar.popularmovies.adapters.TrailerAdapter;
+import com.example.lpelczar.popularmovies.data.MovieContract;
+import com.example.lpelczar.popularmovies.data.MovieContract.MovieEntry;
 import com.example.lpelczar.popularmovies.models.Movie;
 import com.example.lpelczar.popularmovies.models.Review;
 import com.example.lpelczar.popularmovies.models.Video;
 import com.example.lpelczar.popularmovies.widgets.NonScrollListView;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
+
+import org.apache.commons.lang3.SerializationUtils;
 
 import java.util.List;
 import java.util.Locale;
@@ -45,12 +50,10 @@ public class DetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
 
-        Intent intent = getIntent();
-        if (intent == null) closeOnError();
+        if (getIntent() == null) closeOnError();
 
-        Bundle data = getIntent().getExtras();
         Movie movie;
-
+        Bundle data = getIntent().getExtras();
         if (data != null) {
             movie = data.getParcelable(EXTRA_MOVIE);
         } else {
@@ -65,10 +68,9 @@ public class DetailActivity extends AppCompatActivity {
         collapsingToolbarLayout.setTitle(movie.getTitle());
         collapsingToolbarLayout.setExpandedTitleColor(
                 getResources().getColor(android.R.color.transparent));
+        setTitle(movie.getTitle());
 
         populateUI(movie);
-
-        setTitle(movie.getTitle());
     }
 
     private void populateUI(Movie movie) {
@@ -104,16 +106,24 @@ public class DetailActivity extends AppCompatActivity {
         TextView description = findViewById(R.id.description_tv);
         description.setText(movie.getPlot());
 
+        populateTrailers(movie);
+        populateReviews(movie);
+        handleClickingFavouriteButton(movie);
+    }
+
+    private void populateTrailers(Movie movie) {
         if (!movie.getVideos().isEmpty()) {
-            TextView treilersLabel = findViewById(R.id.trailers_label);
-            treilersLabel.setText(R.string.trailers_label);
+            TextView trailersLabel = findViewById(R.id.trailers_label);
+            trailersLabel.setText(R.string.trailers_label);
         }
 
         TrailerAdapter trailerAdapter = new TrailerAdapter(this, movie.getVideos());
         NonScrollListView trailersListView = findViewById(R.id.trailers);
         trailersListView.setAdapter(trailerAdapter);
         handleClickingOnTrailers(movie.getVideos(), trailersListView);
+    }
 
+    private void populateReviews(Movie movie) {
         if (!movie.getReviews().isEmpty()) {
             TextView reviewsLabel = findViewById(R.id.reviews_label);
             reviewsLabel.setText(R.string.reviews_label);
@@ -124,6 +134,32 @@ public class DetailActivity extends AppCompatActivity {
         NonScrollListView reviewsListView = findViewById(R.id.reviews);
         reviewsListView.setAdapter(reviewAdapter);
         handleClickingOnReviews(movie.getReviews(), reviewsListView);
+    }
+
+    private void handleClickingFavouriteButton(final Movie movie) {
+        FloatingActionButton fab = findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ContentValues contentValues = new ContentValues();
+                contentValues.put(MovieEntry.COLUMN_ID, movie.getId());
+                contentValues.put(MovieEntry.COLUMN_TITLE, movie.getTitle());
+                contentValues.put(MovieEntry.COLUMN_RELEASE_DATE, movie.getReleaseDate());
+                contentValues.put(MovieEntry.COLUMN_POSTER, movie.getPoster());
+                contentValues.put(MovieEntry.COLUMN_AVERAGE_VOTE, movie.getAverageVote());
+                contentValues.put(MovieEntry.COLUMN_PLOT, movie.getPlot());
+                contentValues.put(MovieEntry.COLUMN_VIDEOS,
+                        SerializationUtils.serialize(movie.getVideos().toArray()));
+                contentValues.put(MovieEntry.COLUMN_REVIEWS,
+                        SerializationUtils.serialize(movie.getReviews().toArray()));
+
+                Uri uri = getContentResolver().insert(MovieEntry.CONTENT_URI, contentValues);
+                
+                if(uri != null) {
+                    Toast.makeText(getBaseContext(), uri.toString(), Toast.LENGTH_LONG).show();
+                }
+            }
+        });
     }
 
     private void handleClickingOnTrailers(final List<Video> videos, ListView listView) {
