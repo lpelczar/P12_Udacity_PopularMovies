@@ -5,6 +5,8 @@ import android.content.ActivityNotFoundException;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.content.res.ColorStateList;
+import android.database.Cursor;
+import android.database.SQLException;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
@@ -153,10 +155,22 @@ public class DetailActivity extends AppCompatActivity {
                 contentValues.put(MovieEntry.COLUMN_REVIEWS,
                         SerializationUtils.serialize(movie.getReviews().toArray()));
 
-                Uri uri = getContentResolver().insert(MovieEntry.CONTENT_URI, contentValues);
-                
-                if(uri != null) {
-                    Toast.makeText(getBaseContext(), uri.toString(), Toast.LENGTH_LONG).show();
+                Cursor cursor = getContentResolver().query(
+                        MovieEntry.CONTENT_URI,
+                        null,
+                        MovieEntry.COLUMN_ID + "=" + movie.getId(),
+                        null,
+                        null);
+
+                if (cursor.getCount() != 0) {
+                    Toast.makeText(getBaseContext(), "Movie already added to favourites",
+                            Toast.LENGTH_SHORT).show();
+                } else {
+                    Uri uri = getContentResolver().insert(MovieEntry.CONTENT_URI, contentValues);
+
+                    if (uri != null) {
+                        Toast.makeText(getBaseContext(), uri.toString(), Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
         });
