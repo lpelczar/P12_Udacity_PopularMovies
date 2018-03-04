@@ -163,13 +163,23 @@ public class DetailActivity extends AppCompatActivity {
                         null);
 
                 if (cursor.getCount() != 0) {
-                    Toast.makeText(getBaseContext(), "Movie already added to favourites",
-                            Toast.LENGTH_SHORT).show();
+
+                    String stringId = Integer.toString(movie.getId());
+                    Uri uri = MovieEntry.CONTENT_URI;
+                    uri = uri.buildUpon().appendPath(stringId).build();
+                    
+                    int moviesDeleted = getContentResolver().delete(uri,
+                            MovieEntry.COLUMN_ID + "=" + movie.getId(), null);
+                    if (moviesDeleted > 0) {
+                        Toast.makeText(getBaseContext(), "Movie removed from favourites",
+                                Toast.LENGTH_SHORT).show();
+                    }
                 } else {
                     Uri uri = getContentResolver().insert(MovieEntry.CONTENT_URI, contentValues);
 
                     if (uri != null) {
-                        Toast.makeText(getBaseContext(), uri.toString(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getBaseContext(), "Movie added to favourites",
+                                Toast.LENGTH_SHORT).show();
                     }
                 }
             }
