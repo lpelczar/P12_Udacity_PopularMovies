@@ -167,7 +167,7 @@ public class DetailActivity extends AppCompatActivity {
                     String stringId = Integer.toString(movie.getId());
                     Uri uri = MovieEntry.CONTENT_URI;
                     uri = uri.buildUpon().appendPath(stringId).build();
-                    
+
                     int moviesDeleted = getContentResolver().delete(uri,
                             MovieEntry.COLUMN_ID + "=" + movie.getId(), null);
                     if (moviesDeleted > 0) {
@@ -182,6 +182,7 @@ public class DetailActivity extends AppCompatActivity {
                                 Toast.LENGTH_SHORT).show();
                     }
                 }
+                cursor.close();
             }
         });
     }

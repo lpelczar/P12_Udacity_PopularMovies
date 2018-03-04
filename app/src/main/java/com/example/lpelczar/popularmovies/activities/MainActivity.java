@@ -1,6 +1,7 @@
 package com.example.lpelczar.popularmovies.activities;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -9,6 +10,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.example.lpelczar.popularmovies.BuildConfig;
+import com.example.lpelczar.popularmovies.data.MovieContract;
+import com.example.lpelczar.popularmovies.data.MovieContract.MovieEntry;
 import com.example.lpelczar.popularmovies.services.MoviesAPIService;
 import com.example.lpelczar.popularmovies.adapters.MoviesAdapter;
 import com.example.lpelczar.popularmovies.R;
@@ -16,7 +19,10 @@ import com.example.lpelczar.popularmovies.models.Movie;
 import com.example.lpelczar.popularmovies.models.Review;
 import com.example.lpelczar.popularmovies.models.Video;
 
+import org.apache.commons.lang3.SerializationUtils;
+
 import java.util.ArrayList;
+import java.util.List;
 
 import retrofit.Callback;
 import retrofit.RequestInterceptor;
@@ -28,8 +34,9 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Lis
 
     private final String SORT_BY_POPULAR = "popular";
     private final String SORT_BY_TOP_RATED = "top_rated";
+    private final String SHOW_FAVOURITES = "favourites";
     private MoviesAdapter moviesAdapter;
-    private String sort_order = SORT_BY_POPULAR;
+    private String showOption = SORT_BY_POPULAR;
 
     protected static final String API_KEY = BuildConfig.THE_MOVIE_DB_API_TOKEN;
 
@@ -41,14 +48,16 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Lis
         recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
         moviesAdapter = new MoviesAdapter(this, this);
         recyclerView.setAdapter(moviesAdapter);
-        fetchMoviesDataFromDb();
+        fetchMoviesData();
     }
 
-    private void fetchMoviesDataFromDb() {
-        if (sort_order.equals(SORT_BY_POPULAR)) {
+    private void fetchMoviesData() {
+        if (showOption.equals(SORT_BY_POPULAR)) {
             getPopularMovies(getMoviesApiService());
-        } else if (sort_order.equals(SORT_BY_TOP_RATED)) {
+        } else if (showOption.equals(SORT_BY_TOP_RATED)) {
             getTopRatedMovies(getMoviesApiService());
+        } else if (showOption.equals(SHOW_FAVOURITES)) {
+            getFavouriteMovies();
         }
     }
 
@@ -96,6 +105,36 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Lis
                 error.printStackTrace();
             }
         });
+    }
+
+    private void getFavouriteMovies() {
+
+        Cursor cursor = getContentResolver().query(
+                MovieEntry.CONTENT_URI,
+                null,
+                null,
+                null,
+                null);
+
+        List<Movie> movies = new ArrayList<>();
+
+        do{
+            int id = cursor.getInt(cursor.getColumnIndex("id"));
+            String title = cursor.getString(cursor.getColumnIndex("title"));
+            String releaseDate = cursor.getString(cursor.getColumnIndex("releaseDate"));
+            String poster = cursor.getString(cursor.getColumnIndex("poster"));
+            double averageVote = cursor.getDouble(cursor.getColumnIndex("averageVote"));
+            String plot = cursor.getString(cursor.getColumnIndex("plot"));
+            byte[] videosData = cursor.getBlob(cursor.getColumnIndex("videos"));
+            List<Video> videos = SerializationUtils.deserialize(videosData);
+            byte[] reviewsData = cursor.getBlob(cursor.getColumnIndex("reviews"));
+            List<Review> reviews = SerializationUtils.deserialize(reviewsData);
+            movies.add(new Movie(id, title, releaseDate, poster, averageVote, plot,
+                    videos, reviews));
+        }while(cursor.moveToNext());
+        cursor.close();
+        
+        moviesAdapter.setMovieList(movies);
     }
 
     private void fetchTrailersFromDb() {
@@ -163,12 +202,16 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Lis
 
         switch (itemId) {
             case R.id.action_sort_most_popular:
-                    sort_order = SORT_BY_POPULAR;
-                    fetchMoviesDataFromDb();
+                    showOption = SORT_BY_POPULAR;
+                    fetchMoviesData();
                     return true;
             case R.id.action_sort_top_rated:
-                    sort_order = SORT_BY_TOP_RATED;
-                    fetchMoviesDataFromDb();
+                    showOption = SORT_BY_TOP_RATED;
+                    fetchMoviesData();
+                    return true;
+            case R.id.action_favourites:
+                    showOption = SHOW_FAVOURITES;
+                    fetchMoviesData();
                     return true;
         }
         return super.onOptionsItemSelected(item);
