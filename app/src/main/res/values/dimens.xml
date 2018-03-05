@@ -7,4 +7,8 @@
     <dimen name="spacing_large">16dp</dimen>
     <dimen name="spacing_medium">8dp</dimen>
     <dimen name="list_item_height">88dp</dimen>
+    <dimen name="card_view_top_margin">24dp</dimen>
+    <dimen name="card_elevation">8dp</dimen>
+    <dimen name="relative_layout_padding">16dp</dimen>
+    <dimen name="arrow_image_size">45dp</dimen>
 </resources>

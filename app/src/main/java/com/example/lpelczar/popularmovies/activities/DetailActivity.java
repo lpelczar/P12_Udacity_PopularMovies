@@ -6,7 +6,6 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.database.Cursor;
-import android.database.SQLException;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
@@ -27,16 +26,14 @@ import android.widget.Toast;
 import com.example.lpelczar.popularmovies.R;
 import com.example.lpelczar.popularmovies.adapters.ReviewAdapter;
 import com.example.lpelczar.popularmovies.adapters.TrailerAdapter;
-import com.example.lpelczar.popularmovies.data.MovieContract;
 import com.example.lpelczar.popularmovies.data.MovieContract.MovieEntry;
 import com.example.lpelczar.popularmovies.models.Movie;
 import com.example.lpelczar.popularmovies.models.Review;
 import com.example.lpelczar.popularmovies.models.Video;
 import com.example.lpelczar.popularmovies.widgets.NonScrollListView;
+import com.google.gson.Gson;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
-
-import org.apache.commons.lang3.SerializationUtils;
 
 import java.util.List;
 import java.util.Locale;
@@ -79,7 +76,7 @@ public class DetailActivity extends AppCompatActivity {
 
         final ImageView movieView = findViewById(R.id.movie_iv);
         Picasso.with(this)
-                .load(movie.getPoster())
+                .load(movie.getPosterURL())
                 .into(movieView, new Callback() {
 
             @Override public void onSuccess() {
@@ -150,10 +147,8 @@ public class DetailActivity extends AppCompatActivity {
                 contentValues.put(MovieEntry.COLUMN_POSTER, movie.getPoster());
                 contentValues.put(MovieEntry.COLUMN_AVERAGE_VOTE, movie.getAverageVote());
                 contentValues.put(MovieEntry.COLUMN_PLOT, movie.getPlot());
-                contentValues.put(MovieEntry.COLUMN_VIDEOS,
-                        SerializationUtils.serialize(movie.getVideos().toArray()));
-                contentValues.put(MovieEntry.COLUMN_REVIEWS,
-                        SerializationUtils.serialize(movie.getReviews().toArray()));
+                contentValues.put(MovieEntry.COLUMN_VIDEOS, new Gson().toJson(movie.getVideos()));
+                contentValues.put(MovieEntry.COLUMN_REVIEWS, new Gson().toJson(movie.getReviews()));
 
                 Cursor cursor = getContentResolver().query(
                         MovieEntry.CONTENT_URI,

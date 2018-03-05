@@ -53,8 +53,12 @@ public class Movie implements Parcelable {
         this.releaseDate = releaseDate;
     }
 
-    public String getPoster() {
+    public String getPosterURL() {
         return "http://image.tmdb.org/t/p/w500" + poster;
+    }
+
+    public String getPoster() {
+        return poster;
     }
 
     public void setPoster(String poster) {

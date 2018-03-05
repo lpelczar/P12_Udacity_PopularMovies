@@ -1,6 +1,7 @@
 package com.example.lpelczar.popularmovies.adapters;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,18 +37,18 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
         this.onClickListener = listener;
     }
 
-
+    @NonNull
     @Override
-    public MovieViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public MovieViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = inflater.inflate(R.layout.movie_item, parent, false);
         return new MovieViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(MovieViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull MovieViewHolder holder, int position) {
         Movie movie = movieList.get(position);
         Picasso.with(context)
-                .load(movie.getPoster())
+                .load(movie.getPosterURL())
                 .placeholder(R.color.accent)
                 .into(holder.getImageView());
     }
@@ -71,14 +72,14 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
     {
         private ImageView imageView;
 
-        public MovieViewHolder(View itemView)
+        MovieViewHolder(View itemView)
         {
             super(itemView);
             imageView = itemView.findViewById(R.id.movieImage);
             itemView.setOnClickListener(this);
         }
 
-        public ImageView getImageView() {
+        ImageView getImageView() {
             return imageView;
         }
 

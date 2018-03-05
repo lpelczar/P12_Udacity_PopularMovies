@@ -18,10 +18,14 @@ import com.example.lpelczar.popularmovies.R;
 import com.example.lpelczar.popularmovies.models.Movie;
 import com.example.lpelczar.popularmovies.models.Review;
 import com.example.lpelczar.popularmovies.models.Video;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import org.apache.commons.lang3.SerializationUtils;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import retrofit.Callback;
@@ -118,22 +122,27 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Lis
 
         List<Movie> movies = new ArrayList<>();
 
-        do{
-            int id = cursor.getInt(cursor.getColumnIndex("id"));
-            String title = cursor.getString(cursor.getColumnIndex("title"));
-            String releaseDate = cursor.getString(cursor.getColumnIndex("releaseDate"));
-            String poster = cursor.getString(cursor.getColumnIndex("poster"));
-            double averageVote = cursor.getDouble(cursor.getColumnIndex("averageVote"));
-            String plot = cursor.getString(cursor.getColumnIndex("plot"));
-            byte[] videosData = cursor.getBlob(cursor.getColumnIndex("videos"));
-            List<Video> videos = SerializationUtils.deserialize(videosData);
-            byte[] reviewsData = cursor.getBlob(cursor.getColumnIndex("reviews"));
-            List<Review> reviews = SerializationUtils.deserialize(reviewsData);
-            movies.add(new Movie(id, title, releaseDate, poster, averageVote, plot,
-                    videos, reviews));
-        }while(cursor.moveToNext());
+        if (cursor.moveToFirst()) {
+            do {
+                int id = cursor.getInt(cursor.getColumnIndex("id"));
+                String title = cursor.getString(cursor.getColumnIndex("title"));
+                String releaseDate = cursor.getString(cursor.getColumnIndex("releaseDate"));
+                String poster = cursor.getString(cursor.getColumnIndex("poster"));
+                double averageVote = cursor.getDouble(cursor.getColumnIndex("averageVote"));
+                String plot = cursor.getString(cursor.getColumnIndex("plot"));
+                Type videoType = new TypeToken<List<Video>>() {}.getType();
+                List<Video> videos = new Gson().fromJson(
+                        cursor.getString(cursor.getColumnIndex("videos")), videoType);
+                Type reviewType = new TypeToken<List<Review>>() {}.getType();
+                List<Review> reviews = new Gson().fromJson(
+                        cursor.getString(cursor.getColumnIndex("reviews")), reviewType);
+
+                movies.add(new Movie(id, title, releaseDate, poster, averageVote, plot,
+                        videos, reviews));
+            } while (cursor.moveToNext());
+        }
         cursor.close();
-        
+
         moviesAdapter.setMovieList(movies);
     }
 

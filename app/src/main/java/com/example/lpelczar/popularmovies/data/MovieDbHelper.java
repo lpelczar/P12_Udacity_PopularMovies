@@ -28,8 +28,8 @@ public class MovieDbHelper extends SQLiteOpenHelper {
                 MovieEntry.COLUMN_POSTER + " TEXT, " +
                 MovieEntry.COLUMN_AVERAGE_VOTE + " INTEGER, " +
                 MovieEntry.COLUMN_PLOT + " TEXT, " +
-                MovieEntry.COLUMN_VIDEOS + " BLOB, " +
-                MovieEntry.COLUMN_REVIEWS + " BLOB);";
+                MovieEntry.COLUMN_VIDEOS + " TEXT, " +
+                MovieEntry.COLUMN_REVIEWS + " TEXT);";
         db.execSQL(CREATE_TABLE);
     }
 
