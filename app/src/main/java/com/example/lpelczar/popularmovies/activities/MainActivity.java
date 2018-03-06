@@ -2,6 +2,7 @@ package com.example.lpelczar.popularmovies.activities;
 
 import android.content.Intent;
 import android.database.Cursor;
+import android.os.PersistableBundle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -36,6 +37,7 @@ import retrofit.client.Response;
 
 public class MainActivity extends AppCompatActivity implements MoviesAdapter.ListItemClickListener {
 
+    private final String OPTION_KEY = "Option";
     private final String SORT_BY_POPULAR = "popular";
     private final String SORT_BY_TOP_RATED = "top_rated";
     private final String SHOW_FAVOURITES = "favourites";
@@ -47,6 +49,11 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Lis
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (savedInstanceState != null) {
+            showOption = savedInstanceState.getString(OPTION_KEY);
+        }
+
         setContentView(R.layout.activity_main);
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
@@ -228,5 +235,12 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Lis
                     return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putString(OPTION_KEY, showOption);
+        super.onSaveInstanceState(outState);
+
     }
 }
