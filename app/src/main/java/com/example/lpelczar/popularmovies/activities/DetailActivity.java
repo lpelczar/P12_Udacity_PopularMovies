@@ -168,6 +168,8 @@ public class DetailActivity extends AppCompatActivity {
                     if (moviesDeleted > 0) {
                         Toast.makeText(getBaseContext(), "Movie removed from favourites",
                                 Toast.LENGTH_SHORT).show();
+                        FloatingActionButton fab = findViewById(R.id.fab);
+                        fab.setImageResource(R.drawable.ic_favorite_black_24dp);
                     }
                 } else {
                     Uri uri = getContentResolver().insert(MovieEntry.CONTENT_URI, contentValues);
@@ -175,6 +177,8 @@ public class DetailActivity extends AppCompatActivity {
                     if (uri != null) {
                         Toast.makeText(getBaseContext(), "Movie added to favourites",
                                 Toast.LENGTH_SHORT).show();
+                        FloatingActionButton fab = findViewById(R.id.fab);
+                        fab.setImageResource(R.drawable.ic_favorite_border_black_24dp);
                     }
                 }
                 cursor.close();
