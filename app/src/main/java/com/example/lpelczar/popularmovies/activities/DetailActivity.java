@@ -42,22 +42,26 @@ import java.util.Locale;
 public class DetailActivity extends AppCompatActivity {
 
     public static final String EXTRA_MOVIE = "extra_movie";
+    private final String MOVIE_KEY = "Movie";
     private CollapsingToolbarLayout collapsingToolbarLayout;
+    private Movie movie;
 
     @SuppressWarnings("ConstantConditions")
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
 
-        if (getIntent() == null) closeOnError();
-
-        Movie movie;
-        Bundle data = getIntent().getExtras();
-        if (data != null) {
-            movie = data.getParcelable(EXTRA_MOVIE);
+        if (savedInstanceState != null) {
+            movie = savedInstanceState.getParcelable(MOVIE_KEY);
         } else {
-            closeOnError();
-            return;
+            if (getIntent() == null) closeOnError();
+            Bundle data = getIntent().getExtras();
+            if (data != null) {
+                movie = data.getParcelable(EXTRA_MOVIE);
+            } else {
+                closeOnError();
+                return;
+            }
         }
 
         setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
@@ -264,5 +268,11 @@ public class DetailActivity extends AppCompatActivity {
 
         fab.setRippleColor(lightVibrantColor);
         fab.setBackgroundTintList(ColorStateList.valueOf(vibrantColor));
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putParcelable(MOVIE_KEY, movie);
+        super.onSaveInstanceState(outState);
     }
 }
