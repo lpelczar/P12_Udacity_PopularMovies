@@ -13,4 +13,5 @@
     <string name="reviews_label">Reviews:</string>
     <string name="trailers_label">Trailers:</string>
     <string name="favourites">Favourites</string>
+    <string name="share_first_trailer_button">Share first trailer button</string>
 </resources>
