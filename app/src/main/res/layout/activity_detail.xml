@@ -152,6 +152,7 @@
                             android:textStyle="bold" />
 
                         <ImageView
+                            android:id="@+id/share_trailer"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"

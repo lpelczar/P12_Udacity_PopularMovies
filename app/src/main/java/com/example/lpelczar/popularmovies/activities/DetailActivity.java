@@ -108,6 +108,7 @@ public class DetailActivity extends AppCompatActivity {
         populateTrailers(movie);
         populateReviews(movie);
         handleClickingFavouriteButton(movie);
+        handleSharingTrailersButton(movie);
     }
 
     private void populateTrailers(Movie movie) {
@@ -197,7 +198,7 @@ public class DetailActivity extends AppCompatActivity {
                 Intent appIntent = new Intent(Intent.ACTION_VIEW,
                         Uri.parse("vnd.youtube:" + video.getKey()));
                 Intent webIntent = new Intent(Intent.ACTION_VIEW,
-                        Uri.parse("http://www.youtube.com/watch?v=" + video.getKey()));
+                        Uri.parse(video.getYoutubeLink()));
                 try {
                     getApplicationContext().startActivity(appIntent);
                 } catch (ActivityNotFoundException ex) {
@@ -215,6 +216,20 @@ public class DetailActivity extends AppCompatActivity {
                 Review review = reviews.get(position);
                 Intent webIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(review.getUrl()));
                 getApplicationContext().startActivity(webIntent);
+            }
+        });
+    }
+
+    private void handleSharingTrailersButton(final Movie movie) {
+        ImageView shareButton = findViewById(R.id.share_trailer);
+        shareButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Video video = movie.getVideos().get(0);
+                Intent shareIntent = new Intent(Intent.ACTION_SEND);
+                shareIntent.setType("text/plain");
+                shareIntent.putExtra(Intent.EXTRA_TEXT, video.getYoutubeLink());
+                startActivity(Intent.createChooser(shareIntent, "Share link using"));
             }
         });
     }
