@@ -53,6 +53,10 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Lis
         moviesAdapter = new MoviesAdapter(this, this);
         recyclerView.setAdapter(moviesAdapter);
         fetchMoviesData();
+
+        getSupportActionBar().setDisplayUseLogoEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setIcon(R.drawable.ic_movie_filter_white_36dp);
     }
 
     private void fetchMoviesData() {
