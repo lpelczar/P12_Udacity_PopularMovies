@@ -9,6 +9,7 @@ Project 12: Popular Movies - Build an app to help users discover popular and rec
 * [RecyclerView](https://developer.android.com/reference/android/support/v7/widget/RecyclerView.html)
 * [Parcelable](https://developer.android.com/reference/android/os/Parcelable.html)
 * [Serializable](https://developer.android.com/reference/java/io/Serializable.html)
+* [Picasso](http://square.github.io/picasso/)
 * [GSON](https://github.com/google/gson)
 * [JSON](https://en.wikipedia.org/wiki/JSON)
 * [MovieDbAPI](https://www.themoviedb.org/documentation/api)
