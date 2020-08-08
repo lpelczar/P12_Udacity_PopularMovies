@@ -19,4 +19,6 @@ Project 12: Popular Movies - Build an app to help users discover popular and rec
 
 ## Screenshots
 
-![movies](http://i68.tinypic.com/20i9hd1.jpg)
+<img src="https://raw.github.com/lpelczar/P12_Udacity_PopularMovies/master/screenshots/p12-1.png" width="600">
+
+<img src="https://raw.github.com/lpelczar/P12_Udacity_PopularMovies/master/screenshots/p12-2.png" width="600">
